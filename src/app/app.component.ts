@@ -15,9 +15,10 @@ export class AppComponent implements OnInit {
     { headerName: 'Amount', field: 'amount' }
   ];
   myForm: FormGroup = this.fb.group({
-    dropdown: ['', Validators.required],
+    paidBy: ['', Validators.required],
     amountPaid: ['', Validators.required],
     paidFor: ['', Validators.required],
+    howToSplit: ['', Validators.required]
   });
 
   gridOptions: GridOptions = {
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
   };
 
   rowData: any[] = [];
-  tableData: any[] = this.rowData;
+  tableData: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -39,42 +40,77 @@ export class AppComponent implements OnInit {
 
   calculate() {
     const name = this.myForm.get('dropdown')?.value;
-    const paidBy = this.myForm.get('dropdown')?.value;
+    const paidBy = this.myForm.get('paidBy')?.value;
+    const howToSplit = this.myForm.get('howToSplit')?.value;
     const amountPaid = this.myForm.get('amountPaid')?.value;
-
     const paidFor = this.myForm.get('paidFor')?.value;
-
-    const paidForCount = paidFor.split(',').length + 1;
-
     const recipients = paidFor.split(',');
 
-    const amountPerRecipient = amountPaid / paidForCount;
+    if (howToSplit == "split-equally") {
 
-    for (const recipient of recipients) {
-      const existingRow = this.tableData.find((row) => row.name === recipient.trim())
+      const paidForCount = paidFor.split(',').length + 1;
 
-      if (existingRow) {
-        const existingPayer = existingRow.find(existingRow.shouldpay === paidBy.trim())
-        if (existingPayer) {
-          existingRow.amount = (parseFloat(existingRow.amount) + amountPerRecipient).toFixed(2);
+      const amountPerRecipient = amountPaid / paidForCount;
+
+      for (const recipient of recipients) {
+        const existingRow = this.tableData.find((row) => row.name == recipient.trim())
+
+        if (existingRow) {
+          const existingPayer = existingRow.shouldpay == paidBy.trim();
+          if (existingPayer) {
+            existingRow.amount = (parseFloat(existingRow.amount) + amountPerRecipient).toFixed(2);
+          }
+          else {
+            this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
+          }
         }
         else {
           this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
         }
       }
-      else {
-        this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
-      }
+
+      this.rowData = this.tableData;
+      this.gridOptions.api?.setRowData(this.rowData);
+
+      const modalOptions: ModalOptions<ViewResultComponent> = {
+        initialState: {
+          result: amountPerRecipient
+        }
+      };
     }
 
-    this.gridOptions.api?.setRowData(this.rowData);
+    else if (howToSplit == "split-between") {
 
-    const modalOptions: ModalOptions<ViewResultComponent> = {
-      initialState: {
-        result: amountPerRecipient
+      const paidForCount = paidFor.split(',').length;
+      const amountPerRecipient = amountPaid / paidForCount;
+
+      for (const recipient of recipients) {
+        const existingRow = this.tableData.find((row) => row.name == recipient.trim())
+
+        if (existingRow) {
+          const existingPayer = existingRow.shouldpay == paidBy.trim();
+          if (existingPayer) {
+            existingRow.amount = (parseFloat(existingRow.amount) + amountPerRecipient).toFixed(2);
+          }
+          else {
+            this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
+          }
+        }
+        else {
+          this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
+        }
       }
-    };
 
+      this.rowData = this.tableData;
+      this.gridOptions.api?.setRowData(this.rowData);
+
+    }
     // this.bsModalRef = this.modalService.show(ViewResultComponent, modalOptions);
+  }
+
+
+  reset() {
+    this.rowData = [];
+    this.gridOptions.api?.setRowData(this.rowData);
   }
 }

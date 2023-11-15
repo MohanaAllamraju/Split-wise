@@ -5,9 +5,9 @@
   <form [formGroup]="myForm">
 
     <h6 class="justify-content-between">
-      Name:
+      Paid By:
       <span>
-        <select formControlName="dropdown">
+        <select formControlName="paidBy">
           <option value="Venkat">Venkat</option>
           <option value="Anu">Anu</option>
           <option value="Kittu">Kittu</option>
@@ -22,9 +22,22 @@
     <h6>Paid For:
       <input type="text" formControlName="paidFor" placeholder="Enter values seperated by comma">
     </h6>
-    <button (click)="calculate()">Calculate</button>
+    <h6>
+      How to split:
+      <span>
+        <select formControlName="howToSplit">
+          <option value="split-equally">split-equally</option>
+          <option value="split-between">split-between</option>
+        </select>
+      </span>
+    </h6>
+    <div class="d-flex justify-content-center button-color m-3">
+      <button (click)="calculate()">Calculate</button>
+      <span class="ms-3">
+        <button (click)="reset()">Reset</button>
+      </span>
+    </div>
   </form>
-
 </div>
 <ag-grid-angular style="height: 350px;" class="ag-theme-alpine m-5" [gridOptions]="gridOptions">
 </ag-grid-angular>
