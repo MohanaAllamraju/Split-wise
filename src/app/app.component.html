@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@30.2.1/styles/ag-grid.css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@30.2.1/styles/ag-theme-alpine.css" />
+<div class="container text-center mt-5">
+  <form [formGroup]="myForm">
+
+    <h6 class="justify-content-between">
+      Name:
+      <span>
+        <select formControlName="dropdown">
+          <option value="Venkat">Venkat</option>
+          <option value="Anu">Anu</option>
+          <option value="Kittu">Kittu</option>
+          <option value="Mohana">Mohana</option>
+        </select>
+      </span>
+    </h6>
+
+    <h6>Amount Paid:
+      <input type="text" formControlName="amountPaid">
+    </h6>
+    <h6>Paid For:
+      <input type="text" formControlName="paidFor" placeholder="Enter values seperated by comma">
+    </h6>
+    <button (click)="calculate()">Calculate</button>
+  </form>
+
+</div>
+<ag-grid-angular style="height: 350px;" class="ag-theme-alpine m-5" [gridOptions]="gridOptions">
+</ag-grid-angular>
