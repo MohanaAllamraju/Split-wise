@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   };
 
   rowData: any[] = [];
+  tableData: any[] = this.rowData;
 
   constructor(
     private fb: FormBuilder,
@@ -50,19 +51,19 @@ export class AppComponent implements OnInit {
     const amountPerRecipient = amountPaid / paidForCount;
 
     for (const recipient of recipients) {
-      const existingRow = this.rowData.find((row) => row.name === recipient.trim())
+      const existingRow = this.tableData.find((row) => row.name === recipient.trim())
 
       if (existingRow) {
-        const existingPayer = this.rowData.find(row => row.shouldpay === paidBy.trim())
+        const existingPayer = existingRow.find(existingRow.shouldpay === paidBy.trim())
         if (existingPayer) {
           existingRow.amount = (parseFloat(existingRow.amount) + amountPerRecipient).toFixed(2);
         }
         else {
-          this.rowData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
+          this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
         }
       }
       else {
-        this.rowData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
+        this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
       }
     }
 
