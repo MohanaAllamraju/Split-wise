@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ViewResultComponent } from './view-result/view-result.component';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { NameInputDialogComponent } from './name-input-dialog/name-input-dialog.component';
+import { NameDataService } from './name-data.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,6 +16,7 @@ export class AppComponent implements OnInit {
     { headerName: 'Should Pay', field: 'shouldpay' },
     { headerName: 'Amount', field: 'amount' }
   ];
+
   myForm: FormGroup = this.fb.group({
     paidBy: ['', Validators.required],
     amountPaid: ['', Validators.required],
@@ -25,18 +28,34 @@ export class AppComponent implements OnInit {
     columnDefs: this.columnDefs,
   };
 
+  userName: string[] = ['user'];
+
   rowData: any[] = [];
   tableData: any[] = [];
+  title: any;
 
   constructor(
     private fb: FormBuilder,
     private modalService: BsModalService,
-    private bsModalRef: BsModalRef
+    private bsModalRef: BsModalRef,
+    private nameDataService: NameDataService
   ) {
 
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.bsModalRef = this.modalService.show(NameInputDialogComponent)
+    this.nameDataService.currentUserName.subscribe((userName) => {
+      this.myForm.patchValue({
+        paidBy: userName,
+      });
+    });
+  }
+
+  isUserInDropdown(user: string): boolean {
+    const paidByControl = this.myForm.get('paidBy');
+    return paidByControl?.value == user;
+  }
 
   calculate() {
     const name = this.myForm.get('dropdown')?.value;

@@ -8,10 +8,10 @@
       Paid By:
       <span>
         <select formControlName="paidBy">
-          <option value="Venkat">Venkat</option>
-          <option value="Anu">Anu</option>
-          <option value="Kittu">Kittu</option>
-          <option value="Mohana">Mohana</option>
+          <ng-container *ngFor="let user of userName ">
+            <option [value]="user">{{ user }}</option>
+
+          </ng-container>
         </select>
       </span>
     </h6>

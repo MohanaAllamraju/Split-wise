@@ -4,6 +4,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { NameDataService } from '../name-data.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-name-input-dialog',
