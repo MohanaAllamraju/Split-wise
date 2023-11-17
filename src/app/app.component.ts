@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ViewResultComponent } from './view-result/view-result.component';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NameInputDialogComponent } from './name-input-dialog/name-input-dialog.component';
 import { NameDataService } from './name-data.service';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,7 +22,7 @@ export class AppComponent implements OnInit {
   myForm: FormGroup = this.fb.group({
     paidBy: ['', Validators.required],
     amountPaid: ['', Validators.required],
-    paidFor: ['', Validators.required],
+    paidFor: [new FormControl([]), Validators.required],
     howToSplit: ['', Validators.required]
   });
 
@@ -28,7 +30,8 @@ export class AppComponent implements OnInit {
     columnDefs: this.columnDefs,
   };
 
-  userName: string[] = ['user'];
+  users: string[] = [];
+  recipients: string[] = ['keertana', 'nihitha'];
 
   rowData: any[] = [];
   tableData: any[] = [];
@@ -38,23 +41,17 @@ export class AppComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: BsModalService,
     private bsModalRef: BsModalRef,
-    private nameDataService: NameDataService
+    private nameDataService: NameDataService,
   ) {
-
   }
+
+
 
   ngOnInit(): void {
     this.bsModalRef = this.modalService.show(NameInputDialogComponent)
     this.nameDataService.currentUserName.subscribe((userName) => {
-      this.myForm.patchValue({
-        paidBy: userName,
-      });
+      this.users.push(userName);
     });
-  }
-
-  isUserInDropdown(user: string): boolean {
-    const paidByControl = this.myForm.get('paidBy');
-    return paidByControl?.value == user;
   }
 
   calculate() {

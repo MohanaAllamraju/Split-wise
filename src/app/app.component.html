@@ -8,9 +8,8 @@
       Paid By:
       <span>
         <select formControlName="paidBy">
-          <ng-container *ngFor="let user of userName ">
+          <ng-container *ngFor="let user of users ">
             <option [value]="user">{{ user }}</option>
-
           </ng-container>
         </select>
       </span>
@@ -20,8 +19,13 @@
       <input type="text" formControlName="amountPaid">
     </h6>
     <h6>Paid For:
-      <input type="text" formControlName="paidFor" placeholder="Enter values seperated by comma">
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="paidFor" multiple>
+          <mat-option *ngFor="let recipient of recipients" [value]="recipient">{{recipient}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </h6>
+    <!-- <input type="text" formControlName="paidFor" placeholder="Enter values seperated by comma"> -->
     <h6>
       How to split:
       <span>

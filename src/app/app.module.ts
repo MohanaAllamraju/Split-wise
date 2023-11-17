@@ -7,7 +7,7 @@ import { ViewResultComponent } from './view-result/view-result.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AgGridModule } from 'ag-grid-angular';
 import { NameInputDialogComponent } from './name-input-dialog/name-input-dialog.component';
-
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,8 @@ import { NameInputDialogComponent } from './name-input-dialog/name-input-dialog.
     ReactiveFormsModule,
     ModalModule.forRoot(),
     AgGridModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
