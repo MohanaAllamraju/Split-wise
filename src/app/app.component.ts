@@ -62,19 +62,14 @@ export class AppComponent implements OnInit {
     const paidBy = this.myForm.get('paidBy')?.value;
     const howToSplit = this.myForm.get('howToSplit')?.value;
     const amountPaid = this.myForm.get('amountPaid')?.value;
-    const paidFor = this.myForm.get('paidFor')?.value;
+    // const paidFor = this.myForm.get('paidFor')?.value;
     const selectedOptions = this.myForm.get('paidFor')?.value;
-    const selectedOptionsCount = paidFor.length;
-    const recipients = selectedOptions
-
-    // const paidForLength = paidFor.namesplit(',').length;
-
+    const selectedOptionsCount = selectedOptions.length;
+    const recipients = selectedOptions;
 
     if (howToSplit == "split-equally") {
 
-      const paidForCount = selectedOptionsCount + 1;
-
-      const amountPerRecipient = amountPaid / paidForCount;
+      const amountPerRecipient = amountPaid / (selectedOptionsCount + 1);
 
       for (const recipient of recipients) {
         const existingRow = this.tableData.find((row) => row.name == recipient.trim())
@@ -105,8 +100,7 @@ export class AppComponent implements OnInit {
 
     else if (howToSplit == "split-between") {
 
-      const paidForCount = selectedOptions.length;
-      const amountPerRecipient = amountPaid / paidForCount;
+      const amountPerRecipient = amountPaid / selectedOptions.length;
 
       for (const recipient of recipients) {
         const existingRow = this.tableData.find((row) => row.name == recipient.trim())
@@ -124,12 +118,9 @@ export class AppComponent implements OnInit {
           this.tableData.push({ name: recipient.trim(), shouldpay: paidBy, amount: amountPerRecipient.toFixed(2) });
         }
       }
-
       this.rowData = this.tableData;
       this.gridOptions.api?.setRowData(this.rowData);
-
     }
-    // this.bsModalRef = this.modalService.show(ViewResultComponent, modalOptions);
   }
 
 
