@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   myForm: FormGroup = this.fb.group({
     paidBy: ['', Validators.required],
     amountPaid: ['', Validators.required],
-    paidFor: [new FormControl([]), Validators.required],
+    paidFor: [[]],
     howToSplit: ['', Validators.required]
   });
 
@@ -31,7 +31,8 @@ export class AppComponent implements OnInit {
   };
 
   users: string[] = [];
-  recipients: string[] = ['keertana', 'nihitha'];
+  recipients: string[] = ['keertana', 'nihitha', 'mohana', 'anirudh', 'venkat'];
+
 
   rowData: any[] = [];
   tableData: any[] = [];
@@ -52,6 +53,8 @@ export class AppComponent implements OnInit {
     this.nameDataService.currentUserName.subscribe((userName) => {
       this.users.push(userName);
     });
+
+
   }
 
   calculate() {
@@ -60,11 +63,16 @@ export class AppComponent implements OnInit {
     const howToSplit = this.myForm.get('howToSplit')?.value;
     const amountPaid = this.myForm.get('amountPaid')?.value;
     const paidFor = this.myForm.get('paidFor')?.value;
-    const recipients = paidFor.split(',');
+    const selectedOptions = this.myForm.get('paidFor')?.value;
+    const selectedOptionsCount = paidFor.length;
+    const recipients = selectedOptions
+
+    // const paidForLength = paidFor.namesplit(',').length;
+
 
     if (howToSplit == "split-equally") {
 
-      const paidForCount = paidFor.split(',').length + 1;
+      const paidForCount = selectedOptionsCount + 1;
 
       const amountPerRecipient = amountPaid / paidForCount;
 
@@ -97,7 +105,7 @@ export class AppComponent implements OnInit {
 
     else if (howToSplit == "split-between") {
 
-      const paidForCount = paidFor.split(',').length;
+      const paidForCount = selectedOptions.length;
       const amountPerRecipient = amountPaid / paidForCount;
 
       for (const recipient of recipients) {
