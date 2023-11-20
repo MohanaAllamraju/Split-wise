@@ -8,6 +8,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AgGridModule } from 'ag-grid-angular';
 import { NameInputDialogComponent } from './name-input-dialog/name-input-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { NameDataService } from './name-data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -26,7 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatSelectModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [NameDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
